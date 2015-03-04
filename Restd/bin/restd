@@ -1,0 +1,86 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+$|++;
+
+###############################################################################
+#
+# Modules
+#
+###############################################################################
+
+
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+
+use Getopt::Long;
+use Pod::Usage;
+use File::Basename;
+use File::Path;
+use Cwd;
+
+use Restd::Server;
+
+
+###############################################################################
+#
+# Global variables
+#
+###############################################################################
+my %Options;
+my $Server;
+
+sub init {
+	Getopt::Long::Configure("bundling", "no_autoabbrev", "no_ignorecase");
+
+	GetOptions(
+		\%Options,
+		"h|help",
+		"m|manual"
+	) or pod2usage(2);
+
+	$Server = Restd::Server->new();
+}
+
+# Initialize Data
+init();
+
+# Run Server
+$Server->run();
+
+__END__
+
+=head1 NAME
+
+restd - RESTFul web server daemon
+
+=head1 SYNOPSIS
+
+  restd
+
+
+  Options:
+    -h, --help                  brief help message
+    -m, --man                   manual
+
+=head1 PROGRAM OPTIONS
+
+=over
+
+=item B<--help>
+
+Prints a brief help message and exits.
+
+=item B<--man>
+
+Prints the manual page and exits.
+
+=item B<--quiet>
+
+Do not print detailed info about what's going on
+
+=back
+
+=cut
